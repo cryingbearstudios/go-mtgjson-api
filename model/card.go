@@ -1,7 +1,7 @@
 package model
 
 import (
-	"cryingbear.net/go-mtgjson-api/util"
+	"github.com/cryingbearstudios/go-mtgjson-api/util"
 	"github.com/google/uuid"
 )
 

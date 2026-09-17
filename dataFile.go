@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log/slog"
 
-	"cryingbear.net/go-mtgjson-api/jsonStreaming"
-	"cryingbear.net/go-mtgjson-api/model"
-	"cryingbear.net/go-mtgjson-api/util"
+	"github.com/cryingbearstudios/go-mtgjson-api/jsonStreaming"
+	"github.com/cryingbearstudios/go-mtgjson-api/model"
+	"github.com/cryingbearstudios/go-mtgjson-api/util"
 )
 
 // These data types are meant to represent the semantic model of the downloaded files, but should likely not actually

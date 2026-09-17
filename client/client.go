@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"path"
 
-	mtgJson "cryingbear.net/go-mtgjson-api"
-	"cryingbear.net/go-mtgjson-api/model"
+	mtgJson "github.com/cryingbearstudios/go-mtgjson-api"
+	"github.com/cryingbearstudios/go-mtgjson-api/model"
 	"github.com/google/uuid"
 )
 

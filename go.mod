@@ -1,4 +1,4 @@
-module cryingbear.net/go-mtgjson-api
+module github.com/cryingbearstudios/go-mtgjson-api
 
 go 1.26.5
 

@@ -1,6 +1,6 @@
 package model
 
-import "cryingbear.net/go-mtgjson-api/util"
+import "github.com/cryingbearstudios/go-mtgjson-api/util"
 
 type BoosterPack struct {
 	Contents map[string]int `json:"contents"`
