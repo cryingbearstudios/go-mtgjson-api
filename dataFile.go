@@ -1,7 +1,9 @@
 package mtgJson
 
 import (
+	"context"
 	"encoding/json"
+	"io"
 	"log/slog"
 
 	"github.com/cryingbearstudios/go-mtgjson-api/jsonStreaming"
@@ -19,30 +21,38 @@ type dataFile[keyType comparable, ValueType any] struct {
 
 type _ dataFile[util.SetCode, model.Set] // all printings
 
-type MetadataCallback func(meta model.Meta) error
-
-var IgnoreMetadata MetadataCallback = func(meta model.Meta) error {
+func IgnoreMetadata(meta *model.Meta) error {
 	return nil
 }
-var LogMetadata MetadataCallback = func(meta model.Meta) error {
+
+func LogMetadata(meta *model.Meta) error {
 	slog.Info("metadata", "date", meta.Date, "version", meta.Version)
 	return nil
 }
 
-func PreprocessDataFile(dec *json.Decoder, cb MetadataCallback) error {
-	// read start of root object and the "meta" key
+type metaCb func(*model.Meta) error
+type dataCb func(context.Context, json.Token, *json.Decoder) error
+
+func ProcessDataFile(ctx context.Context, input io.Reader, metadataCallback metaCb, dataCallback dataCb) error {
+	dec := json.NewDecoder(input)
 	if err := jsonStreaming.AssertNextTokens(dec, json.Delim('{'), "meta"); err != nil {
 		return err
 	}
-	// read file metadata
 	var meta model.Meta
 	if err := dec.Decode(&meta); err != nil {
 		return err
 	}
-	// pass metadata to callback
-	if err := cb(meta); err != nil {
+	if err := metadataCallback(&meta); err != nil {
 		return err
 	}
-	// read 'data' key and start of 'data' object
-	return jsonStreaming.AssertNextTokens(dec, "data", json.Delim('{'))
+	if err := jsonStreaming.AssertNextTokens(dec, "data"); err != nil {
+		return err
+	}
+	err := jsonStreaming.ProcessObjectByProperties(dec, func(key json.Token) error {
+		return dataCallback(ctx, key, dec)
+	})
+	if err != nil {
+		return err
+	}
+	return jsonStreaming.AssertNextTokens(dec, json.Delim('}'))
 }
