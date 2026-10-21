@@ -1,20 +1,14 @@
 package model
 
-type Condition string
-
-const (
-	NearMint         Condition = "NEAR MINT"
-	LightlyPlayed    Condition = "LIGHTLY PLAYED"
-	ModeratelyPlayed Condition = "MODERATELY PLAYED"
-	HeavilyPlayed    Condition = "HEAVILY PLAYED"
-	Damaged          Condition = "DAMAGED"
+import (
+	"github.com/cryingbearstudios/go-mtgjson-api/util"
 )
 
 type TcgplayerSKUs struct {
-	Condition Condition `json:"condition"`
-	Finish    string    `json:"finish"`
-	Language  string    `json:"language"`
-	Printing  string    `json:"printing"`
-	ProductId int       `json:"productId"`
-	SkuId     int       `json:"skuId"`
+	Condition util.Condition `json:"condition"`
+	Finish    util.Finish    `json:"finish"`
+	Language  util.Language  `json:"language"`
+	Printing  util.Printing  `json:"printing"`
+	ProductId int            `json:"productId"`
+	SkuId     int            `json:"skuId"`
 }
